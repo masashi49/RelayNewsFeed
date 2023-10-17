@@ -18,10 +18,11 @@ const StoryFragment = graphql`
         ...PosterBylineFragment
       }
       thumbnail{
-        url
+        ...ImageFragment @arguments(width:400)
       }
   }
 `
+// ⇧fragmentを追加変更したら、yarn relayを忘れずに
 
 type Props = {
   story: StoryFragment$key;
@@ -40,8 +41,13 @@ export default function Story({ story }: Props): React.ReactElement {
       <PosterByline poster={data.poster} />
       <Heading>{data.title}</Heading>
       <Timestamp time={data.createdAt} />
-      <Image image={data.thumbnail} width={400} height={400} />
+      <Image image={data.thumbnail}  />big image
       <StorySummary summary={data.summary} />
     </Card>
   );
 }
+
+// 親側では ...xxxFragmentとしておくだけ。子供側で使用する値を書き足せる。
+// 親から子にpropsする場合、使用する子componentに対してvalueを追加必要がある。
+// <Hello title={title}/> -> <Hello title={title} time={time}/>
+// <Hello hello={data.hello}/> 親の変更は無し
