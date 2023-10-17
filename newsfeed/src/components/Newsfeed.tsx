@@ -5,13 +5,16 @@ import {useLazyLoadQuery }from "react-relay"
 import {NewsfeedQuery as NewsfeedQueryType} from "./__generated__/NewsfeedQuery.graphql"
 
 // graphqlリテラル、コードベースでGraphQlを検索してコンパイルできる
+// idはバックエンド側で実装しておく
 const NewsfeedQuery = graphql`
   query NewsfeedQuery {
-    topStory{
+    topStories{
+      id
       ...StoryFragment
     }
   }
 `
+// ↑ 配列を取得したいからといって、取得する記述を配列用に変更するわけではない。
 
 
 export default function Newsfeed() {
@@ -22,8 +25,8 @@ export default function Newsfeed() {
     {}, // サーバーに送る際、必要な変数。
   );
 
-  const story = data.topStory
-  //console.log(story)
+  const stories = data.topStories
+  console.log(stories)
   // const story = {
   //   title: "Placeholder Story",
   //   summary: "Placeholder data, to be replaced with data fetched via GraphQL",
@@ -40,7 +43,7 @@ export default function Newsfeed() {
 
   return (
     <div className="newsfeed">
-      <Story story={story} />
+      {stories.map(story=><Story key={story.id} story={story} />)}
     </div>
   );
 }

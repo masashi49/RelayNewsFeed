@@ -42,7 +42,7 @@ export default function Image({ image}:Props) {
       key={data.url}
       src={data.url}
       alt={data.altText}
-      //width={data.width}
+      width={100}
       //height={data.height}
       //className={data.className}
     />

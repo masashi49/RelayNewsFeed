@@ -33,7 +33,7 @@ export default function Story({ story }: Props): React.ReactElement {
     StoryFragment,
     story
   )
-  console.log(data)
+
   // コンポーネントはそれ自体が必要とするデータのフラグメントだけを定義。
   return (
     <Card>
