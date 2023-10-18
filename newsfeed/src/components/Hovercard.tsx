@@ -17,7 +17,10 @@ export default function Hovercard({
 }: Props) {
   const [hoverState, setHoverState] = useState(null);
 
+  console.log(targetRef , 1111)
+
   useEffect(() => {
+    console.log(targetRef , 2222)
     const target = targetRef.current;
     const enterCallback = (event: MouseEvent) => {
       onBeginHover?.();

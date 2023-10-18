@@ -26,7 +26,6 @@ export default function Newsfeed() {
   );
 
   const stories = data.topStories
-  console.log(stories)
   // const story = {
   //   title: "Placeholder Story",
   //   summary: "Placeholder data, to be replaced with data fetched via GraphQL",
