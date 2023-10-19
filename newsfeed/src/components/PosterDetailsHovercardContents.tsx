@@ -25,7 +25,7 @@ export default function PosterDetailsHovercardContents({
 }: {
   posterID: string;
 }): React.ReactElement {
-  const data = useLazyLoadQuery<QueryType>(
+  const data = useLazyLoadQuery<QueryType>( //queryがレンダリングされるとすぐにqueryの取得を開始
     PosterDetailsHovercardContentsQuery,
     {posterID},
   );
