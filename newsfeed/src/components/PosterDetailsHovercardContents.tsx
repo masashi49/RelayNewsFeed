@@ -1,14 +1,14 @@
 import * as React from "react";
-import { useLazyLoadQuery, useFragment } from "react-relay";
+import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import Image from "./Image";
 import Timestamp from "./Timestamp";
-
+import type {PreloadedQuery}from "react-relay"
 import type { PosterDetailsHovercardContentsQuery as QueryType } from "./__generated__/PosterDetailsHovercardContentsQuery.graphql";
 import type { PosterDetailsHovercardContentsBodyFragment$key } from "./__generated__/PosterDetailsHovercardContentsBodyFragment.graphql";
 
 //  ID! は、GraphQLの組み込み型の1つ。何らかの一意の識別子であることを示唆する
-const PosterDetailsHovercardContentsQuery = graphql`
+export const PosterDetailsHovercardContentsQuery = graphql`
   query PosterDetailsHovercardContentsQuery(
     $posterID: ID! 
   ) {
@@ -20,15 +20,30 @@ const PosterDetailsHovercardContentsQuery = graphql`
   }
 `;
 
+// usePreloadedQuery マウントされる前に取得、ページ描画時に最初から出したい時に有効
+// useLazyLoadQuery マウントされた後に取得、ユーザー操作を検知して描画したい時に有効
+// 一度取得するとキャッシュされる。
+
 export default function PosterDetailsHovercardContents({
-  posterID,
+  queryRef,
 }: {
-  posterID: string;
+  queryRef: PreloadedQuery<QueryType>;
 }): React.ReactElement {
-  const data = useLazyLoadQuery<QueryType>( //queryがレンダリングされるとすぐにqueryの取得を開始
+  const data = usePreloadedQuery<QueryType>(
+    PosterDetailsHovercardContentsQuery,
+    queryRef, 
+  );
+
+  /*
+  // 前までは⇩だった。
+  // dataはマウントされた後に取得するので問題なかったが、Preloadするには向きません。
+  // queryRefといったクエリ参照を渡すことで、解決しました。11行目のGraphQLのクエリをexportして親に渡してそこでpreloadしています。
+  const data = useLazyLoadQuery<QueryType>(
     PosterDetailsHovercardContentsQuery,
     {posterID},
   );
+
+  */
 
   return <PosterDetailsHovercardContentsBody poster={data.node} />;
 }

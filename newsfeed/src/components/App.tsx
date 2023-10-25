@@ -9,7 +9,7 @@ export default function App(): React.ReactElement {
       <React.Suspense fallback={<LoadingSpinner />}>
         <div className="app">
           <Newsfeed />
-          hello
+          
         </div>
       </React.Suspense>
     </RelayEnvironment>
