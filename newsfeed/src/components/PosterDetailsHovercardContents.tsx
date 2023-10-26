@@ -6,6 +6,7 @@ import Timestamp from "./Timestamp";
 import type {PreloadedQuery}from "react-relay"
 import type { PosterDetailsHovercardContentsQuery as QueryType } from "./__generated__/PosterDetailsHovercardContentsQuery.graphql";
 import type { PosterDetailsHovercardContentsBodyFragment$key } from "./__generated__/PosterDetailsHovercardContentsBodyFragment.graphql";
+import OrganizationKind from "./OrganizationKind"
 
 //  ID! は、GraphQLの組み込み型の1つ。何らかの一意の識別子であることを示唆する
 export const PosterDetailsHovercardContentsQuery = graphql`
@@ -50,11 +51,18 @@ export default function PosterDetailsHovercardContents({
 
 const PosterDetailsHovercardContentsBodyFragment = graphql`
   fragment PosterDetailsHovercardContentsBodyFragment on Actor {
-    id
     name
     joined
     profilePicture {
       ...ImageFragment
+    }
+    ...on Organization {
+      organizationKind
+    }
+    ...on Person{
+      location{
+        name
+      }
     }
   }
 `;
@@ -76,6 +84,12 @@ function PosterDetailsHovercardContentsBody({
         <li>
           Joined <Timestamp time={data.joined} />
         </li>
+        {data.location != null && (
+           <li>{data.location.name}</li>
+         )}
+        {data.organizationKind != null && (
+          <li><OrganizationKind kind={data.organizationKind} /></li>
+         )}
       </ul>
       <div className="posterHovercard__buttons">
         <button>Friend</button>
