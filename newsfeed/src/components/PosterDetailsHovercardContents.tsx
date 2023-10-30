@@ -21,10 +21,6 @@ export const PosterDetailsHovercardContentsQuery = graphql`
   }
 `;
 
-// usePreloadedQuery マウントされる前に取得、ページ描画時に最初から出したい時に有効
-// useLazyLoadQuery マウントされた後に取得、ユーザー操作を検知して描画したい時に有効
-// 一度取得するとキャッシュされる。
-
 export default function PosterDetailsHovercardContents({
   queryRef,
 }: {
@@ -34,20 +30,11 @@ export default function PosterDetailsHovercardContents({
     PosterDetailsHovercardContentsQuery,
     queryRef, 
   );
-
-  /*
-  // 前までは⇩だった。
-  // dataはマウントされた後に取得するので問題なかったが、Preloadするには向きません。
-  // queryRefといったクエリ参照を渡すことで、解決しました。11行目のGraphQLのクエリをexportして親に渡してそこでpreloadしています。
-  const data = useLazyLoadQuery<QueryType>(
-    PosterDetailsHovercardContentsQuery,
-    {posterID},
-  );
-
-  */
-
   return <PosterDetailsHovercardContentsBody poster={data.node} />;
 }
+
+// const PosterDetailsHovercardContentsBodyFragment = ReactのuseFragmentの中で使用する。
+// fragment PosterDetailsHovercardContentsBodyFragment GraphQLクエリの中で使われます。
 
 const PosterDetailsHovercardContentsBodyFragment = graphql`
   fragment PosterDetailsHovercardContentsBodyFragment on Actor {
