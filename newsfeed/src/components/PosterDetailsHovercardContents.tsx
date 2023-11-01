@@ -61,6 +61,7 @@ function PosterDetailsHovercardContentsBody({
 }) {
 
   const data = useFragment(PosterDetailsHovercardContentsBodyFragment, poster);
+  
   return (
     <>
       <Image
