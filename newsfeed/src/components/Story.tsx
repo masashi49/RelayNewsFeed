@@ -8,6 +8,7 @@ import Timestamp from "./Timestamp"
 import {graphql}from "relay-runtime"
 import { useFragment } from "react-relay";
 import type {StoryFragment$key} from './__generated__/StoryFragment.graphql';
+import StoryCommentsSection from "./StoryCommentsSection"
 
 const StoryFragment = graphql`
   fragment StoryFragment on Story{
@@ -20,6 +21,7 @@ const StoryFragment = graphql`
       thumbnail{
         ...ImageFragment @arguments(width:400)
       }
+      ...StoryCommentsSectionFragment
   }
 `
 // ⇧fragmentを追加変更したら、yarn relayを忘れずに
@@ -42,7 +44,8 @@ export default function Story({ story }: Props): React.ReactElement {
       <Heading>{data.title}</Heading>
       <Timestamp time={data.createdAt} />
       <Image image={data.thumbnail}  />big image
-      <StorySummary summary={data.summary} />
+      <StorySummary summary={data.summary} />bbb
+      <StoryCommentsSection story={data} />aaa
     </Card>
   );
 }
