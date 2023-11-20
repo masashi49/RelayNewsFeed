@@ -3,6 +3,7 @@ import { graphql } from "relay-runtime";
 import { useFragment, usePaginationFragment } from "react-relay";
 import type { StoryCommentsSectionFragment$key } from "./__generated__/StoryCommentsSectionFragment.graphql";
 import Comment from "./Comment";
+import LoadMoreCommentsButton from "./LoadMoreCommentsButton"
 
 const { useState, useTransition } = React;
 
@@ -34,14 +35,23 @@ const StoryCommentsSectionFragment = graphql`
 `;
 
 export default function StoryCommentsSection({ story }: Props) {
+  const [isPending, startTransition] = useTransition();
   const {data,loadNext} = usePaginationFragment(StoryCommentsSectionFragment, story);
-  const onLoadMore = ()=> loadNext(3)
+  const onLoadMore = () => startTransition(() => {
+    loadNext(3);
+  });
   return (
     <div>
       {data.comments.edges.map((edge) => (
         <Comment key={edge.node.id} comment={edge.node} />
       ))}
-      <button onClick={onLoadMore}>もっと見る</button>
+  {data.comments.pageInfo.hasNextPage && (
+        <LoadMoreCommentsButton
+          onClick={onLoadMore}
+          disabled={isPending}
+        />
+      )}
+      {isPending && <>ロード中</>}
     </div>
   );
 }
